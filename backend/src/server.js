@@ -4,10 +4,10 @@ const db = require('./db_config');
 const app = express();
 const port = 3003;
 
-///MUDAR PORTAS
-
 app.use(cors());
 app.use(express.json());
+
+
 
 function verificarProprietarioExistente(bloco, apartamento, idExcluir = null) {
     return new Promise((resolve, reject) => {
@@ -29,7 +29,9 @@ function verificarProprietarioExistente(bloco, apartamento, idExcluir = null) {
     });
 }
 
-// Rotas para Moradores
+
+//MORADORES
+
 app.get('/moradores', async (req, res) => {
     try {
         db.query('SELECT * FROM moradores ORDER BY nome', (err, results) => {
@@ -67,7 +69,6 @@ app.post('/moradores', async (req, res) => {
     try {
         const { nome, bloco, apartamento, telefone, email, status } = req.body;
         
-        // Verifica se já existe um proprietário no mesmo apartamento
         if (status === 'proprietario') {
             const existeProprietario = await verificarProprietarioExistente(bloco, apartamento);
             if (existeProprietario) {
@@ -105,7 +106,6 @@ app.put('/moradores/:id', async (req, res) => {
     try {
         const { nome, bloco, apartamento, telefone, email, status } = req.body;
         
-        // Verifica se já existe um proprietário no mesmo apartamento
         if (status === 'proprietario') {
             const existeProprietario = await verificarProprietarioExistente(bloco, apartamento, req.params.id);
             if (existeProprietario) {
@@ -143,6 +143,8 @@ app.put('/moradores/:id', async (req, res) => {
     }
 });
 
+
+
 app.delete('/moradores/:id', async (req, res) => {
     try {
         db.query('DELETE FROM moradores WHERE id = ?', [req.params.id], (err, result) => {
@@ -163,7 +165,9 @@ app.delete('/moradores/:id', async (req, res) => {
     }
 });
 
-// Rotas para Veículos
+
+//VEICULOS
+
 app.get('/veiculos', async (req, res) => {
     try {
         db.query(`
@@ -184,6 +188,7 @@ app.get('/veiculos', async (req, res) => {
     }
 });
 
+
 app.get('/veiculos/:id', async (req, res) => {
     try {
         db.query('SELECT * FROM veiculos WHERE id = ?', [req.params.id], (err, results) => {
@@ -201,6 +206,7 @@ app.get('/veiculos/:id', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar veículo' });
     }
 });
+
 
 app.post('/veiculos', async (req, res) => {
     try {
@@ -228,6 +234,7 @@ app.post('/veiculos', async (req, res) => {
         res.status(500).json({ error: 'Erro ao criar veículo' });
     }
 });
+
 
 app.put('/veiculos/:id', async (req, res) => {
     try {
@@ -260,6 +267,7 @@ app.put('/veiculos/:id', async (req, res) => {
     }
 });
 
+
 app.delete('/veiculos/:id', async (req, res) => {
     try {
         db.query('DELETE FROM veiculos WHERE id = ?', [req.params.id], (err, result) => {
@@ -280,7 +288,6 @@ app.delete('/veiculos/:id', async (req, res) => {
     }
 });
 
-// Iniciar o servidor
 app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
+    console.log(`Servidor rodando ns porta${port}`);
 });
