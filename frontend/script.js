@@ -1,287 +1,176 @@
+const API = "http://localhost:3002";
+
+function mostrarMsg(texto, tipo) {
+  const notificacao = document.getElementById("notificacao");
+  notificacao.textContent = texto;
+  notificacao.className = `mensagem ${tipo}`;
+  notificacao.style.display = "block";
+  setTimeout(() => (notificacao.style.display = "none"), 4000);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    
-    const API_URL = "http://localhost:3002";
-    const moradorForm = document.getElementById("morador-form");
-    const veiculoForm = document.getElementById("veiculo-form");
-    const listaMoradores = document.getElementById("lista-moradores");
-    const listaVeiculos = document.getElementById("lista-veiculos");
-    const seletorMorador = document.getElementById("morador_id");
+  const tabs = document.querySelectorAll(".aba");
+  const panels = document.querySelectorAll(".painel");
 
-    // Função para mostrar mensagens
-    function mostrarMensagem(mensagem, tipo) {
-        const elemento = document.getElementById('mensagem');
-        elemento.textContent = mensagem;
-        elemento.className = `mensagem ${tipo}`;
-        elemento.style.display = 'block';
-        setTimeout(() => elemento.style.display = 'none', 5000);
-    }
+  const formMorador = document.getElementById("form-morador");
+  const formVeiculo = document.getElementById("form-veiculo");
 
-    // Carregar moradores
-    function carregarMoradores() {
-        fetch(`${API_URL}/moradores`)
-            .then(response => {
-                if (!response.ok) throw new Error('Erro ao carregar moradores');
-                return response.json();
-            })
-            .then(moradores => {
-                listaMoradores.innerHTML = moradores.map(morador => `
-                    <div class="item-lista">
-                        <div class="info">
-                            <strong>${morador.nome}</strong>
-                            <p>Bloco: ${morador.bloco} - Apto: ${morador.apartamento}</p>
-                            <p>Tel: ${morador.telefone}</p>
-                            <p>Email: ${morador.email}</p>
-                            <p>Status: ${morador.status}</p>
-                        </div>
-                        <div class="acoes">
-                            <button onclick="editarMorador(${morador.id})" class="editar">Editar</button>
-                            <button onclick="excluirMorador(${morador.id})" class="excluir">Excluir</button>
-                        </div>
-                    </div>
-                `).join('');
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                mostrarMensagem('Erro ao carregar moradores', 'erro');
-            });
-    }
+  const listaMoradores = document.getElementById("moradores-lista");
+  const listaVeiculos = document.getElementById("veiculos-lista");
+  const selectMorador = document.getElementById("morador-select");
 
-    // Carregar veículos
-    function carregarVeiculos() {
-        fetch(`${API_URL}/veiculos`)
-            .then(response => {
-                if (!response.ok) throw new Error('Erro ao carregar veículos');
-                return response.json();
-            })
-            .then(veiculos => {
-                listaVeiculos.innerHTML = veiculos.map(veiculo => `
-                    <div class="item-lista">
-                        <div class="info">
-                            <strong>${veiculo.modelo} - ${veiculo.placa}</strong>
-                            <p>Cor: ${veiculo.cor}</p>
-                            <p>Vaga: ${veiculo.box}</p>
-                            <p>Morador: ${veiculo.morador_nome || 'Não informado'}</p>
-                        </div>
-                        <div class="acoes">
-                            <button onclick="editarVeiculo(${veiculo.id})" class="editar">Editar</button>
-                            <button onclick="excluirVeiculo(${veiculo.id})" class="excluir">Excluir</button>
-                        </div>
-                    </div>
-                `).join('');
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                mostrarMensagem('Erro ao carregar veículos', 'erro');
-            });
-    }
+  function alternarAbas(tab) {
+    tabs.forEach(btn => btn.classList.remove("ativo"));
+    panels.forEach(sec => sec.classList.remove("ativo"));
+    tab.classList.add("ativo");
+    document.getElementById(tab.dataset.alvo).classList.add("ativo");
+  }
 
-    // Atualizar lista de moradores no select
-    function atualizarSeletorMoradores() {
-        fetch(`${API_URL}/moradores`)
-            .then(response => {
-                if (!response.ok) throw new Error('Erro ao carregar moradores');
-                return response.json();
-            })
-            .then(moradores => {
-                seletorMorador.innerHTML = `
-                    <option value="">Selecione um morador</option>
-                    ${moradores.map(m => `
-                        <option value="${m.id}">${m.nome} - Bloco ${m.bloco} Apto ${m.apartamento}</option>
-                    `).join('')}
-                `;
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                mostrarMensagem('Erro ao carregar lista de moradores', 'erro');
-            });
-    }
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => alternarAbas(tab));
+  });
 
-    // Funções de edição
-    window.editarMorador = function(id) {
-        fetch(`${API_URL}/moradores/${id}`)
-            .then(response => {
-                if (!response.ok) throw new Error('Erro ao carregar morador');
-                return response.json();
-            })
-            .then(morador => {
-                // Adiciona um campo oculto para armazenar o ID do morador
-                let idInput = moradorForm.querySelector('input[name="id"]');
-                if (!idInput) {
-                    idInput = document.createElement('input');
-                    idInput.type = 'hidden';
-                    idInput.name = 'id';
-                    moradorForm.appendChild(idInput);
-                }
-                idInput.value = morador.id;
-                
-                // Preenche os outros campos
-                Object.keys(morador).forEach(key => {
-                    if (key !== 'id') {
-                        const input = moradorForm.elements[key];
-                        if (input) input.value = morador[key];
-                    }
-                });
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                mostrarMensagem('Erro ao carregar dados do morador', 'erro');
-            });
-    };
+  function atualizarSelectMoradores(moradores) {
+    selectMorador.innerHTML = `<option value="">Selecione o morador</option>` +
+      moradores.map(m => `<option value="${m.id}">${m.nome}</option>`).join("");
+  }
 
-    window.editarVeiculo = function(id) {
-        fetch(`${API_URL}/veiculos/${id}`)
-            .then(response => {
-                if (!response.ok) throw new Error('Erro ao carregar veículo');
-                return response.json();
-            })
-            .then(veiculo => {
-                // Adiciona um campo oculto para armazenar o ID do veículo
-                let idInput = veiculoForm.querySelector('input[name="id"]');
-                if (!idInput) {
-                    idInput = document.createElement('input');
-                    idInput.type = 'hidden';
-                    idInput.name = 'id';
-                    veiculoForm.appendChild(idInput);
-                }
-                idInput.value = veiculo.id;
-                
-                // Preenche os outros campos
-                Object.keys(veiculo).forEach(key => {
-                    if (key !== 'id') {
-                        const input = veiculoForm.elements[key];
-                        if (input) input.value = veiculo[key];
-                    }
-                });
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                mostrarMensagem('Erro ao carregar dados do veículo', 'erro');
-            });
-    };
+  function renderizarListaMoradores() {
+    fetch(`${API}/moradores`)
+      .then(res => res.json())
+      .then(data => {
+        listaMoradores.innerHTML = data.map(m => `
+          <div class="item">
+            <div>
+              <strong>${m.nome}</strong><br/>
+              ${m.bloco} - ${m.apartamento}<br/>
+              ${m.telefone} / ${m.email}<br/>
+              Status: ${m.status}
+            </div>
+            <div>
+              <button class="botoes" onclick="editarMorador(${m.id})">Editar</button>
+              <button class="botoes" onclick="deletarMorador(${m.id})">Excluir</button>
+            </div>
+          </div>
+        `).join("");
+        atualizarSelectMoradores(data);
+      });
+  }
 
-    // Funções de exclusão
-    window.excluirMorador = function(id) {
-        if (confirm('Deseja realmente excluir este morador?')) {
-            fetch(`${API_URL}/moradores/${id}`, { method: 'DELETE' })
-                .then(response => {
-                    if (!response.ok) throw new Error('Erro ao excluir morador');
-                    mostrarMensagem('Morador excluído com sucesso', 'sucesso');
-                    carregarMoradores();
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    mostrarMensagem('Erro ao excluir morador', 'erro');
-                });
-        }
-    };
+  function renderizarListaVeiculos() {
+    fetch(`${API}/veiculos`)
+      .then(res => res.json())
+      .then(data => {
+        listaVeiculos.innerHTML = data.map(v => `
+          <div class="item">
+            <div>
+              <strong>${v.modelo} - ${v.placa}</strong><br/>
+              Cor: ${v.cor}, Vaga: ${v.box}<br/>
+              Morador: ${v.morador_nome || 'Não informado'}
+            </div>
+            <div>
+              <button class="botoes" onclick="editarVeiculo(${v.id})">Editar</button>
+              <button class="botoes" onclick="deletarVeiculo(${v.id})">Excluir</button>
+            </div>
+          </div>
+        `).join("");
+      });
+  }
 
-    window.excluirVeiculo = function(id) {
-        if (confirm('Deseja realmente excluir este veículo?')) {
-            fetch(`${API_URL}/veiculos/${id}`, { method: 'DELETE' })
-                .then(response => {
-                    if (!response.ok) throw new Error('Erro ao excluir veículo');
-                    mostrarMensagem('Veículo excluído com sucesso', 'sucesso');
-                    carregarVeiculos();
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    mostrarMensagem('Erro ao excluir veículo', 'erro');
-                });
-        }
-    };
+  formMorador.addEventListener("submit", e => {
+    e.preventDefault();
+    const dados = Object.fromEntries(new FormData(formMorador));
+    const metodo = dados.id ? "PUT" : "POST";
+    const url = dados.id ? `${API}/moradores/${dados.id}` : `${API}/moradores`;
+    if (dados.id) delete dados.id;
 
-    // Eventos de formulário
-    moradorForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(moradorForm);
-        const morador = Object.fromEntries(formData.entries());
-        
-        // Verifica se existe um ID para determinar se é edição ou cadastro
-        const id = morador.id;
-        const url = id ? `${API_URL}/moradores/${id}` : `${API_URL}/moradores`;
-        const method = id ? 'PUT' : 'POST';
-        
-        // Remove o ID do objeto se for um novo cadastro
-        if (!id) {
-            delete morador.id;
-        }
+    fetch(url, {
+      method: metodo,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    })
+    .then(res => {
+      if (!res.ok) throw new Error("Falha ao salvar morador.");
+      return res.json();
+    })
+    .then(() => {
+      formMorador.reset();
+      formMorador.querySelector('input[name="id"]').value = "";
+      renderizarListaMoradores();
+      mostrarMsg("Morador salvo com sucesso!", "sucesso");
+    })
+    .catch(() => mostrarMsg("Erro ao salvar morador", "erro"));
+  });
 
-        try {
-            const response = await fetch(url, {
-                method: method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(morador)
-            });
 
-            const data = await response.json();
+  formVeiculo.addEventListener("submit", e => {
+    e.preventDefault();
+    const dados = Object.fromEntries(new FormData(formVeiculo));
+    const metodo = dados.id ? "PUT" : "POST";
+    const url = dados.id ? `${API}/veiculos/${dados.id}` : `${API}/veiculos`;
+    if (dados.id) delete dados.id;
 
-            if (!response.ok) {
-                throw new Error(data.error || 'Erro ao salvar morador');
-            }
+    fetch(url, {
+      method: metodo,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    })
+    .then(res => {
+      if (!res.ok) throw new Error("Falha ao salvar veículo.");
+      return res.json();
+    })
+    .then(() => {
+      formVeiculo.reset();
+      formVeiculo.querySelector('input[name="id"]').value = "";
+      renderizarListaVeiculos();
+      mostrarMsg("Veículo salvo com sucesso!", "sucesso");
+    })
+    .catch(() => mostrarMsg("Erro ao salvar veículo", "erro"));
+  });
 
-            mostrarMensagem(
-                id ? 'Morador atualizado com sucesso' : 'Morador cadastrado com sucesso',
-                'sucesso'
-            );
-            moradorForm.reset();
-            carregarMoradores();
-        } catch (error) {
-            console.error('Erro:', error);
-            mostrarMensagem(error.message, 'erro');
-        }
-    });
 
-    veiculoForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(veiculoForm);
-        const veiculo = Object.fromEntries(formData.entries());
-        
-        // Verifica se existe um ID para determinar se é edição ou cadastro
-        const id = veiculo.id;
-        const url = id ? `${API_URL}/veiculos/${id}` : `${API_URL}/veiculos`;
-        const method = id ? 'PUT' : 'POST';
-        
-        // Remove o ID do objeto se for um novo cadastro
-        if (!id) {
-            delete veiculo.id;
-        }
+  renderizarListaMoradores();
+  renderizarListaVeiculos();
 
-        try {
-            const response = await fetch(url, {
-                method: method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(veiculo)
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || 'Erro ao salvar veículo');
-            }
-
-            mostrarMensagem(
-                id ? 'Veículo atualizado com sucesso' : 'Veículo cadastrado com sucesso',
-                'sucesso'
-            );
-            veiculoForm.reset();
-            carregarVeiculos();
-        } catch (error) {
-            console.error('Erro:', error);
-            mostrarMensagem(error.message, 'erro');
-        }
-    });
-
-    // Gerenciamento das tabs
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.addEventListener('click', () => {
-            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            button.classList.add('active');
-            document.getElementById(`${button.dataset.tab}-section`).classList.add('active');
-        });
-    });
-    carregarMoradores();         
-    carregarVeiculos();          
-    atualizarSeletorMoradores()
-    
 });
+
+
+window.editarMorador = function(id) {
+  fetch(`${API}/moradores/${id}`)
+    .then(res => res.json())
+    .then(dado => {
+      const form = document.getElementById("form-morador");
+      Object.keys(dado).forEach(chave => {
+        if (form[chave]) form[chave].value = dado[chave];
+      });
+    });
+}
+
+window.editarVeiculo = function(id) {
+  fetch(`${API}/veiculos/${id}`)
+    .then(res => res.json())
+    .then(dado => {
+      const form = document.getElementById("form-veiculo");
+      Object.keys(dado).forEach(chave => {
+        if (form[chave]) form[chave].value = dado[chave];
+      });
+    });
+}
+
+window.deletarMorador = function(id) {
+  if (!confirm("Confirmar exclusão do morador?")) return;
+  fetch(`${API}/moradores/${id}`, { method: "DELETE" })
+    .then(() => {
+      mostrarMsg("Morador removido!", "sucesso");
+      document.dispatchEvent(new Event("DOMContentLoaded"));
+    });
+}
+
+window.deletarVeiculo = function(id) {
+  if (!confirm("Confirmar exclusão do veículo?")) return;
+  fetch(`${API}/veiculos/${id}`, { method: "DELETE" })
+    .then(() => {
+      mostrarMsg("Veículo removido!", "sucesso");
+      document.dispatchEvent(new Event("DOMContentLoaded"));
+    });
+}
