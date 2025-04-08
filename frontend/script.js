@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `).join("");
             });
     }
-    
+
 
     formMorador.addEventListener("submit", e => {
         e.preventDefault();
@@ -175,3 +175,14 @@ window.deletarVeiculo = function (id) {
             document.dispatchEvent(new Event("DOMContentLoaded"));
         });
 }
+
+//---------------------------------------------------------------------
+
+window.addEventListener("resize", () => {
+    const largura = window.innerWidth;
+    console.log(`Tamanho da tela: ${largura}px`);
+
+    if (largura < 768) {
+        console.log("você está usando uma tela mobile (pequena)");
+    }
+});

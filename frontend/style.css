@@ -22,7 +22,6 @@ header {
     color: white;
 }
 
-
 nav ul {
     display: flex;
     justify-content: center;
@@ -30,7 +29,6 @@ nav ul {
     list-style: none;
     padding: 0;
 }
-
 
 nav button {
     background-color: #5a4696;
@@ -42,11 +40,9 @@ nav button {
     font-size: 16px;
 }
 
-.nav button:hover {
+nav button:hover {
     background-color: #66559a;
-
 }
-
 
 form {
     display: flex;
@@ -55,14 +51,12 @@ form {
     margin-bottom: 20px;
 }
 
-
 form input,
 form select {
     padding: 20px;
     border-radius: 4px;
     border: 1px solid #ccc;
 }
-
 
 form button {
     background-color: #403072;
@@ -71,7 +65,6 @@ form button {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-family: 'Segoe UI', sans-serif;
     font-weight: bold;
 }
 
@@ -80,11 +73,9 @@ form button:hover {
     background-color: #604f90;
 }
 
-
 .painel {
     display: none;
 }
-
 
 .painel.ativo {
     display: block;
@@ -128,17 +119,37 @@ form button:hover {
     width: 70px;
     height: 30px;
     border-radius: 5px;
-    font-family: 'Segoe UI', sans-serif;
+    font-weight: bold;
     border: none;
     cursor: pointer;
-    justify-content: center;
     display: flex;
-    margin: 5px;
+    justify-content: center;
     align-items: center;
-    font-weight: bold;
-
+    margin: 5px;
 }
 
 .botoes:hover {
     background-color: #721c24;
 }
+
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    form input, form select, form button {
+        width: 100%;
+    }
+
+    .botoes {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
