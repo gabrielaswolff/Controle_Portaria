@@ -1,80 +1,83 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portaria</title>
-  <link rel="stylesheet" href="./style.css"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portaria</title>
+    <link rel="stylesheet" href="./style.css" />
 </head>
+
 <body>
 
     <header>
         <div class="header-content">
-          <h1>Sistema de Portaria</h1>
-          <nav>
-            <ul>
-              <li><button class="aba" data-alvo="moradores">Moradores</button></li>
-              <li><button class="aba" data-alvo="veiculos">Veículos</button></li>
-            </ul>
-          </nav>
+            <h1>Sistema de Portaria</h1>
+            <nav>
+                <ul>
+                    <li><button class="aba" data-alvo="moradores">Moradores</button></li>
+                    <li><button class="aba" data-alvo="veiculos">Veículos</button></li>
+                </ul>
+            </nav>
         </div>
-      </header>
-      
+    </header>
 
-  <div class="container">
 
-    <main>
-      <section id="moradores" class="painel ativo">
-        <h2>Cadastro de Moradores</h2>
-        <form id="form-morador">
-        
-                <input type="hidden" name="id" />
-              
-          <input type="text" name="nome" placeholder="Nome completo" required />
-          <input type="text" name="bloco" placeholder="Bloco" required />
-          <input type="text" name="apartamento" placeholder="Apartamento" required />
-          <input type="tel" name="telefone" placeholder="Telefone" required />
-          <input type="email" name="email" placeholder="Email" required />
-          <select name="status" required>
-            <option value="">Selecione o status</option>
-            <option value="residente">Residente</option>
-            <option value="proprietario">Proprietário</option>
-            <option value="visitante">Visitante</option>
-          </select>
+    <div class="container">
 
-          <button type="submit">Salvar Morador</button>
+        <main>
+            <section id="moradores" class="painel ativo">
+                <h2>Cadastro de Moradores</h2>
+                <form id="form-morador">
 
-        </form>
-        <h2>Moradores Cadastrados</h2>
-        <div class="lista" id="moradores-lista"></div>
-        
-      </section>
+                    <input type="hidden" name="id" />
 
-      <section id="veiculos" class="painel">
-        <h2>Cadastro de Veículos</h2>
+                    <input type="text" name="nome" placeholder="Nome completo" required />
+                    <input type="text" name="bloco" placeholder="Bloco" required />
+                    <input type="text" name="apartamento" placeholder="Apartamento" required />
+                    <input type="tel" name="telefone" placeholder="Telefone" required />
+                    <input type="email" name="email" placeholder="Email" required />
+                    <select name="status" required>
+                        <option value="">Selecione o status</option>
+                        <option value="residente">Residente</option>
+                        <option value="proprietario">Proprietário</option>
+                        <option value="visitante">Visitante</option>
+                    </select>
 
-        <form id="form-veiculo">
+                    <button type="submit">Salvar Morador</button>
 
-        <input type="hidden" name="id" />
+                </form>
+                <h2>Moradores Cadastrados</h2>
+                <div class="lista" id="moradores-lista"></div>
 
-          <input type="text" name="placa" placeholder="Placa" required />
-          <input type="text" name="modelo" placeholder="Modelo" required />
-          <input type="text" name="cor" placeholder="Cor" required />
-          <input type="text" name="box" placeholder="Vaga" required />
-          <select name="morador_id" id="morador-select" required>
-            <option value="">Selecione o morador</option>
-          </select>
-          <button type="submit">Salvar Veículo</button>
-        </form>
-        <h2>Veiculos Cadastrados</h2>
-        <div class="lista" id="veiculos-lista"></div>
-      </section>
-    </main>
+            </section>
 
-    <div id="notificacao" class="mensagem" aria-live="polite"></div>
+            <section id="veiculos" class="painel">
+                <h2>Cadastro de Veículos</h2>
 
-  </div>
+                <form id="form-veiculo">
 
-  <script src="./script.js"></script>
+                    <input type="hidden" name="id" />
+
+                    <input type="text" name="placa" placeholder="Placa" required />
+                    <input type="text" name="modelo" placeholder="Modelo" required />
+                    <input type="text" name="cor" placeholder="Cor" required />
+                    <input type="text" name="box" placeholder="Vaga" required />
+                    <select name="morador_id" id="morador-select" required>
+                        <option value="">Selecione o morador</option>
+                    </select>
+                    <button type="submit">Salvar Veículo</button>
+                </form>
+                <h2>Veiculos Cadastrados</h2>
+                <div class="lista" id="veiculos-lista"></div>
+            </section>
+        </main>
+
+        <div id="notificacao" class="mensagem" aria-live="polite"></div>
+
+    </div>
+
+    <script src="./script.js"></script>
 </body>
+
 </html>

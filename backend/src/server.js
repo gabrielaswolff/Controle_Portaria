@@ -7,6 +7,9 @@ const port = 3003;
 app.use(cors());
 app.use(express.json());
 
+app.listen(port, () => {
+    console.log(`Servidor rodando na porta: ${port}`);
+});
 
 
 function verificarProprietarioExistente(bloco, apartamento, idExcluir = null) {
@@ -288,6 +291,3 @@ app.delete('/veiculos/:id', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Servidor rodando ns porta${port}`);
-});

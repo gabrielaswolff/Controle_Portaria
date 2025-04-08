@@ -1,19 +1,19 @@
-body{
+body {
     font-family: 'Segoe UI', sans-serif;
     margin: 0;
     background-color: #f5f5f5;
     color: #333;
-  }
-  
-.container{
+}
+
+.container {
     max-width: 960px;
     margin: auto;
     padding: 20px;
     box-sizing: border-box;
 }
-  
-header{
-    width: 100%; 
+
+header {
+    width: 100%;
     margin: 0;
     padding: 0.4px 0;
     text-align: center;
@@ -21,9 +21,9 @@ header{
     box-sizing: border-box;
     color: white;
 }
-  
-  
-nav ul{
+
+
+nav ul {
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -31,8 +31,8 @@ nav ul{
     padding: 0;
 }
 
-  
-nav button{
+
+nav button {
     background-color: #5a4696;
     color: white;
     border: none;
@@ -42,28 +42,29 @@ nav button{
     font-size: 16px;
 }
 
-.nav button:hover{
+.nav button:hover {
     background-color: #66559a;
 
 }
 
-  
-form{
+
+form {
     display: flex;
     flex-direction: column;
     gap: 12px;
     margin-bottom: 20px;
 }
 
-  
-form input,form select{
+
+form input,
+form select {
     padding: 20px;
     border-radius: 4px;
     border: 1px solid #ccc;
 }
-  
 
-form button{
+
+form button {
     background-color: #403072;
     color: white;
     padding: 20px;
@@ -73,55 +74,55 @@ form button{
     font-family: 'Segoe UI', sans-serif;
     font-weight: bold;
 }
-  
 
-form button:hover{
+
+form button:hover {
     background-color: #604f90;
 }
 
-  
-.painel{
+
+.painel {
     display: none;
 }
 
-  
-.painel.ativo{
+
+.painel.ativo {
     display: block;
 }
-  
-.lista{
+
+.lista {
     border-top: 2px solid #ccc;
     padding-top: 15px;
 }
-  
-.item{
+
+.item {
     background: white;
     padding: 12px;
     margin-bottom: 10px;
     border-radius: 6px;
     display: flex;
     justify-content: space-between;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-  
-.mensagem{
+
+.mensagem {
     margin-top: 15px;
     padding: 12px;
     display: none;
     border-radius: 5px;
 }
-  
-.mensagem.sucesso{
+
+.mensagem.sucesso {
     background-color: #d4edda;
     color: #155724;
 }
-  
-.mensagem.erro{
+
+.mensagem.erro {
     background-color: #f8d7da;
     color: #721c24;
 }
 
-.botoes{
+.botoes {
     background-color: #ab1f2d;
     color: white;
     width: 70px;
@@ -130,8 +131,14 @@ form button:hover{
     font-family: 'Segoe UI', sans-serif;
     border: none;
     cursor: pointer;
+    justify-content: center;
+    display: flex;
+    margin: 5px;
+    align-items: center;
+    font-weight: bold;
+
 }
 
-.botoes:hover{
+.botoes:hover {
     background-color: #721c24;
 }
