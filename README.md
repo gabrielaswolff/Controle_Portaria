@@ -1,7 +1,5 @@
 # Controle de Portaria
 
-Desenvolvido por: Gabriela e Laura
-Turma: 3BM
 
 Website de Sistema de Portaria de um condomínio focado em CRUD, responsividade e acessibilidade. Abaixo as informações necessárias para o teste de rotas:
 
